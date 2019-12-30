@@ -283,7 +283,7 @@ promptUser()
 })
 
 async function getRepos(answer){
-    const queryUrl = "https://api.github.com/search/users?q=" + answer
+    const queryUrl = `https://api.github.com/users/${answer}`
     const response = await fetch(queryUrl)
     const result = await response.json()
     console.log(result)
