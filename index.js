@@ -1,6 +1,7 @@
 const inquirer = require("inquirer")
 const fs = require("fs")
 const util = require("util")
+const fetch = require("node-fetch")
 const electron = require("electron")
 
 const writeFileAsync = util.promisify(fs.writeFile)
@@ -274,12 +275,19 @@ const colors = {
 
 promptUser()
 .then(function(answer){
+    getRepos(answer.username)
     console.log(answer)
     const html = generateHTML(answer)
     return writeFileAsync("index.html", html)
 
 })
 
+async function getRepos(answer){
+    const queryUrl = "https://api.github.com/search/users?q=" + answer
+    const response = await fetch(queryUrl)
+    const result = await response.json()
+    console.log(result)
+}
 
 // function requestUser (username){
 
