@@ -79,10 +79,22 @@ const colors = {
           <h1 class="photo-headerh1">Hello</h1>
     
     <div class="container">
-        <div class="card col ">card</div>
-        <div class="card col">card</div>
-        <div class="card col">card</div>
-        <div class="card col">card</div>
+        <div class="card col">
+          <h2>Public Repositories</h2>
+          <h4>20</h4>
+        </div>
+        <div class="card col">
+            <h2>Followers</h2>
+            <h4>0</h4>
+        </div>
+        <div class="card col">
+            <h2>Github Stars</h2>
+            <h4>0</h4>
+        </div>
+        <div class="card col">
+            <h2>Following</h2>
+            <h4>0</h4>
+        </div>
     
     </div>
          
@@ -115,7 +127,7 @@ const colors = {
         }
     
         .wrapper {
-          background-color: #DE9967;
+          background-color: ${colors[data.color].wrapperBackground};
           padding-top: 100px;
         }
     
@@ -172,8 +184,8 @@ const colors = {
           display: flex;
           justify-content: center;
           flex-wrap: wrap;
-          background-color: #870603;
-          color: white;
+          background-color: ${colors[data.color].headerBackground};
+         color: ${colors[data.color].headerColor};
           padding: 10px;
           width: 95%;
           border-radius: 6px;
@@ -185,7 +197,7 @@ const colors = {
           border-radius: 50%;
           object-fit: cover;
           margin-top: -75px;
-          border: 6px solid white;
+          border: 6px solid ${colors[data.color].photoBorderColor};
           box-shadow: rgba(0, 0, 0, 0.3) 4px 1px 20px 4px;
         }
     
@@ -235,8 +247,8 @@ const colors = {
         .card {
           padding: 20px;
           border-radius: 6px;
-          background-color: #870603;
-          color: white;
+          background-color: ${colors[data.color].headerBackground};
+           color: ${colors[data.color].headerColor};
           margin: 20px;
         }
     
