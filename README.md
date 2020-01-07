@@ -22,26 +22,31 @@ For this homework, we had to create a command-line application that dynamically 
 
 
 ## Code snippet 
-```html
-var time = ["9", "10", "11", "12", "13", "14", "15", "16", "17"]
-    
-function currentTime(){
-    var current = moment().format("H")
-    for (var i = 0; i < time.length; i++){
-    if(parseInt(time[i]) > current){
-        $("#" + time[i]).attr("style", "background-color: green")
-    }
-    else if(parseInt(time[i]) == current){
-        $("#" + time[i]).attr("style", "background-color: red")
-    }
-    else if(parseInt(time[i]) < current){
-        $("#" + time[i]).attr("style", "background-color: grey")
-    }
-    }
+```function init() {
+  inquirer.prompt(questions).then(function({username, color}){
+    getUserInfo(username)
+    .then(function(result){
+      getStars(username).then(function(stars){
+        return generateHTML({stars, color, result})
+      })
+      .then(function(response){
+        console.log("Generating your PDF file!")
+        var conversion = convertFactory({
+          converterPath: convertFactory.converters.PDF
+        });
+        conversion({html: response}, function(err, result) {
+          if (err) {
+            return console.error(err);
+          }
+          result.stream.pipe(fs.createWriteStream('github.pdf'));
+          conversion.kill();
+        });
+      })
+    })
+  })
 }
-currentTime()
 ```
-This was the function i used to set the color of the input boxes based on the time of day. I created an array of the 'hour' in military time, which were the ids i had set for each individual input box in my HTML code. I created the function currentTime(), which would control the background colors of the input boxes. I set a variable 'current' as the current time and set it equal to the current time in military time in hours (this was done using moment.js). I then created a for loop that would iterate through the array i created earlier. I then created 3 conditional statements, comparing the 'time' in my array with the current hour. Since my array consisted of strings, i had to parseInt() them to make sure that they were interpreted as integers. Inside my conditional statement, i grabbed the input box using the Id, and attributed a background color based on whichever condition it met. 
+This was the main function that this application ran on. First, the prompt was run, which asked the user for their username and to pick their favorite color. 
 
 ## Authors
 
