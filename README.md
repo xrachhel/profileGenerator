@@ -46,12 +46,12 @@ For this homework, we had to create a command-line application that dynamically 
   })
 }
 ```
-This was the main function that this application ran on. First, the prompt was run, which asked the user for their username and to pick their favorite color. 
+This was the main function that this application ran on. First, the prompt was run, which asked the user for their username and to pick their favorite color. this information was fed into the 'getUserInfo' function, which contains an Github API call to return the information needed. A '.then' (promise) statement is used right after, and the 'getStars' function, which contains another Github API call to grab information about Stars is made using the information the user gave. Another promise is made, in which the information from both API calls are passed into the 'generateHTML' function, which will generate a HTML file with the information from both Github API calls. After this, another promise is made to convert the html file into a PDF. I used the 'electron-html-to' package to do this, and followed their documentation in order to convert the HTML generated into a PDF file. 
 
 ## Authors
 
 Rachel Yeung 
 
-- [Link to Portfolio Site](https://xrachhel.github.io/interactivePortfolio/)
-- [Link to Github](https://github.com/xrachhel/dayPlanner)
+- [Link to Portfolio Site](https://xrachhel.github.io/updatedPortfolio/)
+- [Link to Github](https://github.com/xrachhel)
 - [Link to LinkedIn](https://www.linkedin.com/)
