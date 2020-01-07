@@ -1,99 +1,9 @@
-// const inquirer = require("inquirer")
-// const fs = require("fs")
-// const util = require("util")
-// const fetch = require("node-fetch")
-// const electron = require("electron")
-
-// const writeFileAsync = util.promisify(fs.writeFile)
-
-// function promptUser(){
-//     return inquirer.prompt([
-//         {
-//             type: "input",
-//             name: "username",
-//             message: "What is your github username?"
-//         },
-//         {
-//             type: "list",
-//             name: "color",
-//             message: "What is your favorite color?",
-//             choices: ['green', 'blue', 'pink', 'red']
-//         }
-
-//     ])
-// }
-// // const questions = [
-// //   {
-// //     type: "input",
-// //     name: "github",
-// //     message: "What is your GitHub username?"
-// //   },
-// //   {
-// //     type: "list",
-// //     name: "color",
-// //     message: "What is your favorite color?",
-// //     choices: ["red", "blue", "green", "pink"]
-// //   }
-// // ];
-
-// // function init(){
-// //   inquirer.prompt(questions).then(({ github, color }) => {
-// //     return fetch(`https://api.github.com/users/${github}`)
-// //     .then(return writeFileAsync("index.html"), )
-
-// //     // const result = await response.json()}
-
-// // }
-
-
-// promptUser()
-// .then(function(data){
-//    getRepos(data.username)
-//   //  console.log(user)
-//   //  console.log(data.name)
-//   //   console.log(data)
-//     // const html = generateHTML(answer,username)
-
-    
-    
-    
-
-// })
-// .then(function(){
-//   setTimeout(function(data){
-//     return writeFileAsync("index.html", generateHTML(data))
-//   }, 5000)
-// })
-
-// // promptUser()
-// // .then( (answer) => getRepos(answer.username))
-// //     // .then ((answer) =>  generateHTML(answer) )
-// //     .then((answer) => writeFileAsync("index.html", generateHTML(answer))
-// // );
-
-// // function getRepos(answer){
-// //     const queryUrl = `https://api.github.com/users/${answer}`
-// //     const response = fetch(queryUrl)
-// //     console.log(response)
-// //     const result = response.json()
-// //     let name = result.name
-// //     console.log(name)
-// //     console.log(result)
-// //     return name 
-// // }
-
-// async function getRepos(answer){
-//   const queryUrl = `https://api.github.com/users/${answer}`
-//   const response = await fetch(queryUrl)
-//   const result = await response.json()
-//   console.log(result)
-//   const name = result.name
-//   console.log(name)
-//   // const name = result.name
-//   // console.log(name)
-//   // console.log(result)
-//   return result
-// }
+const fs = require ("fs")
+const inquirer = require("inquirer")
+const axios = require("axios")
+const util = require("util")
+require("dotenv").config()
+const convertFactory = require("electron-html-to")
 
 const colors = {
     green: {
@@ -137,11 +47,11 @@ const colors = {
       <div class="wrapper ">
         <div class="photo-header">
           <img class="photo-headerimg"
-            src="data:image/jpeg;base64,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"
+            src="${data.result[9]}"
             alt="">
           <h1 class="photo-headerh1">Hi!</h1>
           <h2 class="photo-headerh2">My Name is ${data.result[0]}</h2>
-          <h3>currently at ${data.result[7]}</h3>
+          <h3>Currently at ${data.result[7]}</h3>
           <div class="links-nav">
             <a href="#" class="nav-link">${data.result[1]}</a>
             <a href="${data.result[2]}" class="nav-link">GitHub</a>
@@ -173,7 +83,6 @@ const colors = {
     </div>
          
         </main>
-        <div class="wrapper"></div>
       </div>
       
     
@@ -346,16 +255,6 @@ const colors = {
       </style>`
           }
 
-const fs = require ("fs")
-const inquirer = require("inquirer")
-const axios = require("axios")
-const util = require("util")
-require("dotenv").config()
-const fileConvert = require("electron-html-to")
-
-const writeFileAsync = util.promisify(fs.writeFile)
-
-
 const questions = [
   {
     type: "input",
@@ -370,54 +269,33 @@ const questions = [
   }
 ];
 
-
-// function writeToFile(fileName, data) {
- 
-// }
-
 function init() {
-  // inquirer.prompt(questions).then(function(response){
-  //   console.log(response)
-  // })
   inquirer.prompt(questions).then(function({username, color}){
-
     getUserInfo(username)
     .then(function(result){
-      console.log(result)
-      console.log("done1")
-      
       getStars(username).then(function(stars){
-        const html = generateHTML({stars, color, result})
-        return writeFileAsync("index.html", html)
-        console.log("done")
-        
-        // const html = generateHTML({stars, color, ...response.data})
-        // return writeFileAsync("index.html", html)
+        return generateHTML({stars, color, result})
+      })
+      .then(function(response){
+        console.log("Generating your PDF file!")
+        var conversion = convertFactory({
+          converterPath: convertFactory.converters.PDF
+        });
+        conversion({html: response}, function(err, result) {
+          if (err) {
+            return console.error(err);
+          }
+          result.stream.pipe(fs.createWriteStream('github.pdf'));
+          conversion.kill();
+        });
       })
     })
-    
-    
-
-  //   getUserInfo(username)
-  //   .then(function(response){
-  //     getStars(username)
-  //     .then(function(starinfo){
-  //       const html = generateHTML({
-  //         starinfo,
-  //         color,
-  //         ...response.data
-  //       })
-  //       return writeFileAsync("index.html", html)
-  //     })
-  //   })
-
   })
 }
 
 function getUserInfo(username){
   const info = axios.get(`https://api.github.com/users/${username}`)
   .then(function(response){
-    console.log(response.data)
     const dataInfo = response.data
     const name = dataInfo.name
     const location = dataInfo.location
@@ -428,16 +306,13 @@ function getUserInfo(username){
     const following = dataInfo.following
     const company = dataInfo.company 
     const bio = dataInfo.bio
-    var arr = [name, location, github, blog, repo, followers, following, company, bio]
+    const pic = dataInfo.avatar_url
+    var arr = [name, location, github, blog, repo, followers, following, company, bio, pic]
     userInfo = [...arr]
-    console.log(userInfo)
     return userInfo
-    
   })
-  
-  .catch(function(err){console.log("error1")})
+  .catch(function(err){console.log("error")})
   return info
-
 }
 
 
@@ -446,10 +321,8 @@ function getUserInfo(username){
 function getStars(username){
   const stars = axios.get(`https://api.github.com/users/${username}/repos`)
   .then(function(response){
-    // console.log(response.data)
     return response.data.reduce(function(total, curr){
       total += curr.stargazers_count
-      console.log(total)
       return total
     }, 0)
   })
