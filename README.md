@@ -2,7 +2,7 @@
 
 For this application, we had to create a command-line application that dynamically generates a PDF file based on the Github username the user gives. The user will be prompted in the command line for their github username as well as their favorite color, which will be used as the background and theme of the PDF file. The PDF file will contain their profile image, their location, github profile, blog, their bio, number of public repositories, number of followers, number of GitHub stars, and number of users following.
 ## Demo
-run 'node index.js' in your terminal
+run 'node index.js' in aaterminal
 ![gif](/assets/commandline.gif)
 ![screenshot](/assets/screenshot.png)
 
@@ -11,9 +11,9 @@ run 'node index.js' in your terminal
 * [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML): used for structuring and creating elements on the DOM
 * [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS): used to style html elements on the page
 * [Node.js](https://developer.mozilla.org/en-US/docs/Web/API/Node): Javascript runtime, allows users to run Javascript on the server
-* [Inquirer NPM](https://www.npmjs.com/package/inquirer)
-* [Electron NPM](https://www.npmjs.com/package/electron) 
-* [Electron-html-to NPM](https://www.npmjs.com/package/electron-html-to)
+* [Inquirer NPM](https://www.npmjs.com/package/inquirer): Command Line Interface for Node.js
+* [Electron NPM](https://www.npmjs.com/package/electron): Framework that allows users to write cross-platform desktop applications using Javascript, HTML, and CSS
+* [Electron-html-to NPM](https://www.npmjs.com/package/electron-html-to): Allows users to convert a HTML/CSS/JS page into any format
 
 ## Code snippet 
 ```function init() {
@@ -46,6 +46,6 @@ This was the main function that this application ran on. First, the prompt was r
 
 Rachel Yeung 
 
-- [Link to Portfolio Site](https://xrachhel.github.io/updatedPortfolio/)
-- [Link to Github](https://github.com/xrachhel)
-- [Link to LinkedIn](https://www.linkedin.com/)
+- [Portfolio](https://xrachhel.github.io/updatedPortfolio/)
+- [Github](https://github.com/xrachhel)
+- [LinkedIn](https://www.linkedin.com/)
