@@ -2,8 +2,11 @@
 
 For this application, we had to create a command-line application that dynamically generates a PDF file based on the Github username the user gives. The user will be prompted in the command line for their github username as well as their favorite color, which will be used as the background and theme of the PDF file. The PDF file will contain their profile image, their location, github profile, blog, their bio, number of public repositories, number of followers, number of GitHub stars, and number of users following.
 ## Demo
-run 'node index.js' in aaterminal
+run 'node index.js' in terminal
+
+
 ![gif](/assets/commandline.gif)
+
 ![screenshot](/assets/screenshot.png)
 
 ## Built With
