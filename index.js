@@ -1,40 +1,42 @@
-const fs = require ("fs")
-const inquirer = require("inquirer")
-const axios = require("axios")
-const util = require("util")
-require("dotenv").config()
-const convertFactory = require("electron-html-to")
+// Dependencies
+const fs = require("fs");
+const inquirer = require("inquirer");
+const axios = require("axios");
+require("dotenv").config();
+const convertFactory = require("electron-html-to");
 
+// Color themes 
 const colors = {
-    green: {
-      wrapperBackground: "#E6E1C3",
-      headerBackground: "#C1C72C",
-      headerColor: "black",
-      photoBorderColor: "#black"
-    },
-    blue: {
-      wrapperBackground: "#5F64D3",
-      headerBackground: "#26175A",
-      headerColor: "white",
-      photoBorderColor: "#73448C"
-    },
-    pink: {
-      wrapperBackground: "#879CDF",
-      headerBackground: "#FF8374",
-      headerColor: "white",
-      photoBorderColor: "#FEE24C"
-    },
-    red: {
-      wrapperBackground: "#DE9967",
-      headerBackground: "#870603",
-      headerColor: "white",
-      photoBorderColor: "white"
-    }
-  };
-  var userInfo =[]; 
-  
-  function generateHTML(data) {
-    return `<!DOCTYPE html>
+  green: {
+    wrapperBackground: "#E6E1C3",
+    headerBackground: "#C1C72C",
+    headerColor: "black",
+    photoBorderColor: "#black"
+  },
+  blue: {
+    wrapperBackground: "#5F64D3",
+    headerBackground: "#26175A",
+    headerColor: "white",
+    photoBorderColor: "#73448C"
+  },
+  pink: {
+    wrapperBackground: "#879CDF",
+    headerBackground: "#FF8374",
+    headerColor: "white",
+    photoBorderColor: "#FEE24C"
+  },
+  red: {
+    wrapperBackground: "#DE9967",
+    headerBackground: "#870603",
+    headerColor: "white",
+    photoBorderColor: "white"
+  }
+};
+var userInfo = [];
+
+// Generate HTML for PDF document using template literals
+function generateHTML(data) {
+  return `<!DOCTYPE html>
     <html lang="en">
     
     <head>
@@ -253,8 +255,9 @@ const colors = {
           }
         }
       </style>`
-          }
+}
 
+// Inquirer prompts
 const questions = [
   {
     type: "input",
@@ -269,65 +272,66 @@ const questions = [
   }
 ];
 
+// Function that runs getUserInfo and getStars to get user information from GitHub,
+// generates the HTML file, and converts it into a PDF file using Convert Factory
 function init() {
-  inquirer.prompt(questions).then(function({username, color}){
+  inquirer.prompt(questions).then(function ({ username, color }) {
     getUserInfo(username)
-    .then(function(result){
-      getStars(username).then(function(stars){
-        return generateHTML({stars, color, result})
+      .then(function (result) {
+        getStars(username).then(function (stars) {
+          return generateHTML({ stars, color, result })
+        })
+          .then(function (response) {
+            console.log("Generating your PDF file!")
+            var conversion = convertFactory({
+              converterPath: convertFactory.converters.PDF
+            });
+            conversion({ html: response }, function (err, result) {
+              if (err) {
+                return console.error(err);
+              }
+              result.stream.pipe(fs.createWriteStream('github.pdf'));
+              conversion.kill();
+            });
+          })
       })
-      .then(function(response){
-        console.log("Generating your PDF file!")
-        var conversion = convertFactory({
-          converterPath: convertFactory.converters.PDF
-        });
-        conversion({html: response}, function(err, result) {
-          if (err) {
-            return console.error(err);
-          }
-          result.stream.pipe(fs.createWriteStream('github.pdf'));
-          conversion.kill();
-        });
-      })
-    })
   })
-}
+};
 
-function getUserInfo(username){
+// API call to GitHub to get user information
+function getUserInfo(username) {
   const info = axios.get(`https://api.github.com/users/${username}`)
-  .then(function(response){
-    const dataInfo = response.data
-    const name = dataInfo.name
-    const location = dataInfo.location
-    const github = dataInfo.html_url
-    const blog = dataInfo.blog
-    const repo = dataInfo.public_repos
-    const followers = dataInfo.followers
-    const following = dataInfo.following
-    const company = dataInfo.company 
-    const bio = dataInfo.bio
-    const pic = dataInfo.avatar_url
-    var arr = [name, location, github, blog, repo, followers, following, company, bio, pic]
-    userInfo = [...arr]
-    return userInfo
-  })
-  .catch(function(err){console.log("error")})
+    .then(function (response) {
+      const dataInfo = response.data
+      const name = dataInfo.name
+      const location = dataInfo.location
+      const github = dataInfo.html_url
+      const blog = dataInfo.blog
+      const repo = dataInfo.public_repos
+      const followers = dataInfo.followers
+      const following = dataInfo.following
+      const company = dataInfo.company
+      const bio = dataInfo.bio
+      const pic = dataInfo.avatar_url
+      var arr = [name, location, github, blog, repo, followers, following, company, bio, pic]
+      userInfo = [...arr]
+      return userInfo
+    })
+    .catch(function (err) { console.log("error") })
   return info
-}
+};
 
-
-
-
-function getStars(username){
+// API call to get Star information using username information from getUserInfo API call
+function getStars(username) {
   const stars = axios.get(`https://api.github.com/users/${username}/repos`)
-  .then(function(response){
-    return response.data.reduce(function(total, curr){
-      total += curr.stargazers_count
-      return total
-    }, 0)
-  })
-  .catch(function(err){console.log("error")})
+    .then(function (response) {
+      return response.data.reduce(function (total, curr) {
+        total += curr.stargazers_count
+        return total
+      }, 0)
+    })
+    .catch(function (err) { console.log("error") })
   return stars
-}
+};
 init();
 
